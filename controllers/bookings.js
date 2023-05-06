@@ -17,5 +17,5 @@ module.exports.deleteBooking = async (req, res) => {
   await Campground.findByIdAndUpdate(id, { $pull: { bookings: bookingID } });
   await Booking.findByIdAndDelete(bookingID);
   req.flash("success", "Deleted your Booking");
-  res.redirect(`campgrounds/${id}`);
+  res.redirect(`/campgrounds/${id}`);
 };
