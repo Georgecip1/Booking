@@ -33,15 +33,16 @@ module.exports.createNewCampground = async (req, res, next) => {
   res.redirect(`/campgrounds/${newCampground._id}`);
 };
 
-module.exports.showCampground = async (req, res) => {
-  const campground = await Campground.findById(req.params.id)
-    .populate({ path: "reviews", populate: { path: "author" } })
-    .populate("author");
-  if (!campground) {
-    req.flash("error", "Cannot find that campground");
-    return res.redirect("/campgrounds");
+module.exports.showCampground = async (req, res, next) => {
+  try {
+    const campground = await Campground.findById(req.params.id)
+      .populate({ path: "reviews", populate: { path: "author" } })
+      .populate({ path: "bookings", populate: { path: "author" } })
+      .populate("author");
+    res.render("campgrounds/show", { campground, mapBoxToken });
+  } catch (err) {
+    next(err);
   }
-  res.render("campgrounds/show", { campground, mapBoxToken });
 };
 
 module.exports.renderEditForm = async (req, res) => {
@@ -72,7 +73,6 @@ module.exports.editCampground = async (req, res) => {
     await updatedCampground.updateOne({
       $pull: { images: { filename: { $in: req.body.deleteImages } } },
     });
-
   }
   req.flash("success", "Successfully Updated Campground!");
   res.redirect(`/campgrounds/${updatedCampground._id}`);

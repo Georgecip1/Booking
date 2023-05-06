@@ -1,7 +1,8 @@
 const ExpressError = require("./utils/ExpressError");
-const { campgroundSchema, reviewSchema } = require("./schemas.js");
+const { campgroundSchema, reviewSchema, bookingSchema } = require("./schemas.js");
 const Campground = require("./models/campground");
 const Review = require("./models/review");
+const Booking = require("./models/booking");
 
 module.exports.isLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -39,8 +40,28 @@ module.exports.isReviewAuthor = async (req, res, next) => {
   }
   next();
 };
+
 module.exports.validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+module.exports.isBookingAuthor = async (req, res, next) => {
+  const { id, bookingID } = req.params;
+  const booking = await Booking.findById(bookingID);
+  if (!booking.author.equals(req.user._id)) {
+    req.flash("error", "You do not have permission");
+    return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+};
+module.exports.validateBooking = (req, res, next) => {
+  const { error } = bookingSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
     throw new ExpressError(msg, 400);

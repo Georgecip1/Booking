@@ -2,9 +2,24 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const catchAsync = require("../utils/catchAsync");
 const bookings = require("../controllers/bookings");
-const { isLoggedIn} = require("../middleware");
+const {
+  isLoggedIn,
+  validateBooking,
+  isReviewAuthor,
+  isBookingAuthor
+} = require("../middleware");
 
-router.post("/", catchAsync(bookings.createBooking));
-router.delete('/:bookingID', catchAsync(bookings.deleteBooking));
+router.post(
+  "/",
+  isLoggedIn,
+  validateBooking,
+  catchAsync(bookings.createBooking)
+);
+router.delete(
+  "/:bookingID",
+  isLoggedIn,
+  isBookingAuthor,
+  catchAsync(bookings.deleteBooking)
+);
 
 module.exports = router;

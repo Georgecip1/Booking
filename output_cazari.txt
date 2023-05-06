@@ -1,0 +1,24 @@
+Name: Casa Vlad & Elisa
+Reviews: 3 recenzii
+Price: 2002
+Location: Bacău, str. CIRESOAIA, nr. 22
+Image: https://www.turistinfo.ro/images/liste/1121895.jpg
+
+Name: Pensiunea Margo Lounge & Business Resort
+Reviews: 8 recenzii
+Price: 170
+Location: Lilieci, str. Calea Moldovei, nr. 468, la  8.7 km de centrul localității Bacău
+Image: https://www.turistinfo.ro/static/img/loading.gif
+
+Name: Pensiunea Studio
+Reviews: 8 recenzii
+Price: 160
+Location: Bacău, str. Oituz, nr. 17
+Image: https://www.turistinfo.ro/static/img/loading.gif
+
+Name: Vila Royal
+Reviews: 2 recenzii
+Price: 200
+Location: Bacău, str. Alecu Russo, nr. 26
+Image: https://www.turistinfo.ro/static/img/loading.gif
+
