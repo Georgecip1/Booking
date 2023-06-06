@@ -1,0 +1,159 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.4.0/mapbox-gl.js'></script>
+
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="carousel slide" id="cazareCarousel">
+                <div class="carousel-inner">
+                    <% cazare.images.forEach((img, i) =>{ %>
+                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                            <img class="d-block w-100" src="<%= img.url %>" alt=""></div>
+                        <% })  %>
+                    </div>
+                    <% if (cazare.images.length >1) { %>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#cazareCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#cazareCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    <% } %>
+                </div>
+
+
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= cazare.title %></h5>
+                        <p class="card-text"><%= cazare.description %></p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted"><%= cazare.location %></li>
+                        <li class="list-group-item">Adaugată de
+                            <%= cazare.author.username %></li>
+                        <li class="list-group-item"><%= cazare.price %>
+                            Lei/noapte</li>
+                    </ul>
+                    <% if(currentUser && cazare.author.equals(currentUser)) {%>
+                        <div class="card-body">
+                            <a class="card-link btn btn-info" href="/cazari/<%= cazare._id %>/edit">Modifică</a>
+                            <form class="d-inline" action="/cazari/<%=cazare._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger">Șterge</button>
+                            </form>
+                        </div>
+                    <% } %>
+                    <div class="card-footer text-muted">Acum 5 zile</div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div id='map'></div>
+                <% if(currentUser) { %>
+                    <h2>Lasă o recenzie!</h2>
+                    <form action="/cazari/<%= cazare._id %>/reviews" method="POST" class="mb-3 validated-form" novalidate="novalidate">
+                        <div class="mb-3">
+                            <fieldset class="starability-basic">
+                                <legend>Stele:</legend>
+                                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating."/>
+                                <input type="radio" id="first-rate1" name="review[rating]" value="1"/>
+                                <label for="first-rate1" title="Terrible">1 star</label>
+                                <input type="radio" id="first-rate2" name="review[rating]" value="2"/>
+                                <label for="first-rate2" title="Not good">2 stars</label>
+                                <input type="radio" id="first-rate3" name="review[rating]" value="3"/>
+                                <label for="first-rate3" title="Average">3 stars</label>
+                                <input type="radio" id="first-rate4" name="review[rating]" value="4"/>
+                                <label for="first-rate4" title="Very good">4 stars</label>
+                                <input type="radio" id="first-rate5" name="review[rating]" value="5"/>
+                                <label for="first-rate5" title="Amazing">5 stars</label>
+                            </fieldset>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="body">Descriere</label>
+                            <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required="required"></textarea>
+                            <div class="valid-feedback">Arată bine!</div>
+                            <div class="invalid-feedback">
+                                Introdu descrierea recenziei
+                            </div>
+                        </div>
+                        <button class="btn btn-success">Trimite Recenzie</button>
+                    </form>
+                <% } %>
+                <% for(let review of cazare.reviews){%>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%=review.author.username  %></h5>
+                            <p class="starability-result" data-rating="<%= review.rating %>">
+                                Rated:
+                                <%= review.rating %>
+                                stars
+                            </p>
+                            <p class="card-text">Review:
+                                <%= review.body %></p>
+                            <% if(currentUser && review.author.equals(currentUser)) {%>
+                                <form action="/cazari/<%= cazare._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                    <button class="btn btn-sm btn-danger">Șterge</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+                <% if(currentUser) { %>
+                    <h2>Planifică o rezervare</h2>
+                    <form action="/cazari/<%= cazare._id %>/bookings" method="POST" class="mb-3 validated-form" novalidate="novalidate">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="mb-3"><input id="checkIn" name="booking[checkIn]" class="form-control" type="date" required/>
+                                    <div class="invalid-feedback">
+                                        Introdu o dată pentru check-in
+                                    </div>
+                                </div>
+                                <div class="mb-3"><input id="checkOut" name="booking[checkOut]" class="form-control" type="date" required/>
+                                    <div class="invalid-feedback">
+                                        Introdu o dată pentru check-out
+                                    </div></div>
+                                <div class="mb-3"><input id="guests" name="booking[guests]" class="form-control" type="number" required/
+                                    min="1" max="10" placeholder="Introdu numărul de persoane">
+                                    <div class="invalid-feedback">
+                                        Introdu numărul de persoane
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-success">Rezervă</button>
+                        </div>
+
+                    </form>
+                <% } %>
+                <% if(currentUser) %>
+                    <% for(let booking of cazare.bookings){%>
+                        <% if((currentUser && booking.author.equals(currentUser)) || (currentUser && cazare.author.equals(currentUser)) ) {%>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= booking.author.username %></h5>
+                                    <p class="card-text">Check In:
+                                        <%= booking.checkIn %></p>
+                                    <p class="card-text">Check Out:
+                                        <%= booking.checkOut %></p>
+                                    <% if((currentUser && booking.author.equals(currentUser)) || (currentUser && cazare.author.equals(currentUser))) {%>
+                                        <form action="/cazari/<%= cazare._id %>/bookings/<%= booking._id %>?_method=DELETE" method="POST">
+                                            <button class="btn btn-sm btn-danger">Șterge</button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+            <script>
+                const mapToken = "<%- mapBoxToken %>"
+                const cazare = <%- JSON.stringify(cazare) %>
+            </script>
+            <script src="/javascripts/showPageMap.js"></script>

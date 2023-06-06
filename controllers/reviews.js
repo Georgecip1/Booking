@@ -1,21 +1,21 @@
-const Campground = require("../models/campground");
+const Cazare = require("../models/cazare");
 const Review = require("../models/review");
 
 module.exports.editReview = async (req, res) => {
-  const campground = await Campground.findById(req.params.id);
+  const cazare = await Cazare.findById(req.params.id);
   const review = new Review(req.body.review);
   review.author = req.user._id;
-  campground.reviews.push(review);
+  cazare.reviews.push(review);
   await review.save();
-  await campground.save();
-  req.flash("success", "Created a new Review");
-  res.redirect(`/campgrounds/${campground._id}`);
+  await cazare.save();
+  req.flash("success", "Review creat cu succes!");
+  res.redirect(`/cazari/${cazare._id}`);
 };
 
 module.exports.deleteReview = async (req, res) => {
   const { id, reviewID } = req.params;
-  await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewID } });
+  await Cazare.findByIdAndUpdate(id, { $pull: { reviews: reviewID } });
   await Review.findByIdAndDelete(reviewID);
-  req.flash("success", "Deleted review successfully");
-  res.redirect(`/campgrounds/${id}`);
+  req.flash("success", "Review șters cu succes!");
+  res.redirect(`/cazari/${id}`);
 };
