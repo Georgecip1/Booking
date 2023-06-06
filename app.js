@@ -19,25 +19,25 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 
 const userRoutes = require("./routes/users");
-const campgroundRoutes = require("./routes/campgrounds");
+const cazareRoutes = require("./routes/cazari");
 const reviewRoutes = require("./routes/reviews");
 const bookingRoutes = require("./routes/bookings")
 const MongoStore = require("connect-mongo");
-const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/yelp-camp";
+const dbUrl =  "mongodb://127.0.0.1:27017/GeoBook";
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
   console.log("Database connected");
-});
+}); 
 
 app.engine("ejs", engine);
 app.set("view engine", "ejs"); //setare pentru a nu mai pune ".ejs" la fiecare view
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method")); //folosire method override pentru a folosi POST cand vrem sa modificam sau stergem o locatie prin PUT
+app.use(methodOverride("_method")); //folosire method override pentru a folosi POST cand vrem sa modificam sau stergem o locatie
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
@@ -134,9 +134,9 @@ app.use((req, res, next) => {
 });
 
 app.use("/", userRoutes);
-app.use("/campgrounds", campgroundRoutes);
-app.use("/campgrounds/:id/reviews", reviewRoutes);
-app.use('/campgrounds/:id/bookings', bookingRoutes)
+app.use("/cazari", cazareRoutes);
+app.use("/cazari/:id/reviews", reviewRoutes);
+app.use('/cazari/:id/bookings', bookingRoutes)
 
 app.get("/", (req, res) => {
   res.render("home");

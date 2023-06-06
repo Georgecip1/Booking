@@ -11,8 +11,8 @@ module.exports.register = async (req, res) => {
     const registeredUser = await User.register(user, password);
     req.login(registeredUser, (err) => {
       if (err) return next(err);
-      req.flash("success", `Welcome to Yelp Camp, ${registeredUser.username}!`);
-      res.redirect("/campgrounds");
+      req.flash("success", `Bine ai venit, ${registeredUser.username}!`);
+      res.redirect("/cazari");
     });
   } catch (e) {
     req.flash("error", e.message);
@@ -25,8 +25,8 @@ module.exports.renderLogin = (req, res) => {
 };
 
 module.exports.login = (req, res) => {
-  const redirectUrl = req.session.returnTo || "/campgrounds";
-  req.flash("success", "Welcome back!");
+  const redirectUrl = req.session.returnTo || "/cazari";
+  req.flash("success", "Salutări din nou!");
   res.redirect(redirectUrl);
   delete req.session.returnTo;
 };
@@ -36,7 +36,7 @@ module.exports.logout = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    req.flash("success", "Logged Out!");
-    res.redirect("/campgrounds");
+    req.flash("success", "Te-ai delogat cu succes!");
+    res.redirect("/cazari");
   });
 };
