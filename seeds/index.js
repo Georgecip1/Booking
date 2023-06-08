@@ -58,16 +58,16 @@ const seedDB = async () => {
       },
       images: [
         {
-          url: "https://res.cloudinary.com/dj4kytz0z/image/upload/v1680708372/YelpCamp/c2fjyq08avldfq728wju.jpg",
-          filename: "YelpCamp/c2fjyq08avldfq728wju",
+          url: "https://res.cloudinary.com/dj4kytz0z/image/upload/v1686065548/GeoBook/c2fjyq08avldfq728wju_k0nx5s.jpg",
+          filename: "GeoBook/c2fjyq08avldfq728wju_k0nx5s",
         },
         {
-          url: "https://res.cloudinary.com/dj4kytz0z/image/upload/v1680685450/YelpCamp/bvtgs8s0bgsdazdfpas3.jpg",
-          filename: "YelpCamp/bvtgs8s0bgsdazdfpas3",
+          url: "https://res.cloudinary.com/dj4kytz0z/image/upload/v1686065544/GeoBook/bvtgs8s0bgsdazdfpas3_c13qze.jpg",
+          filename: "GeoBook/bvtgs8s0bgsdazdfpas3_c13qze",
         },
         {
-          url: "https://res.cloudinary.com/dj4kytz0z/image/upload/v1680640857/YelpCamp/otfsmgi7dlkwtcfsn9hw.jpg",
-          filename: "YelpCamp/otfsmgi7dlkwtcfsn9hw",
+          url: "https://res.cloudinary.com/dj4kytz0z/image/upload/v1686065542/GeoBook/otfsmgi7dlkwtcfsn9hw_hnieyl.jpg",
+          filename: "GeoBook/otfsmgi7dlkwtcfsn9hw_hnieyl",
         },
       ],
     });
