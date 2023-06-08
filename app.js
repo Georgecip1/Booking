@@ -23,7 +23,7 @@ const cazareRoutes = require("./routes/cazari");
 const reviewRoutes = require("./routes/reviews");
 const bookingRoutes = require("./routes/bookings")
 const MongoStore = require("connect-mongo");
-const dbUrl =  "mongodb://127.0.0.1:27017/GeoBook";
+const dbUrl =   "mongodb://127.0.0.1:27017/GeoBook" || process.env.DB_URL  ;
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
@@ -33,11 +33,11 @@ db.once("open", () => {
 }); 
 
 app.engine("ejs", engine);
-app.set("view engine", "ejs"); //setare pentru a nu mai pune ".ejs" la fiecare view
+app.set("view engine", "ejs"); 
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method")); //folosire method override pentru a folosi POST cand vrem sa modificam sau stergem o locatie
+app.use(methodOverride("_method")); 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
@@ -110,8 +110,7 @@ app.use(
         "'self'",
         "blob:",
         "data:",
-        "https://res.cloudinary.com/dj4kytz0z/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
-        "https://images.unsplash.com/",
+        "https://res.cloudinary.com/dj4kytz0z/", 
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
       mediaSrc: ["https://res.cloudinary.com/dj4kytz0z/"],
