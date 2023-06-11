@@ -23,7 +23,7 @@ const cazareRoutes = require("./routes/cazari");
 const reviewRoutes = require("./routes/reviews");
 const bookingRoutes = require("./routes/bookings")
 const MongoStore = require("connect-mongo");
-const dbUrl =  process.env.DB_URL || "mongodb://127.0.0.1:27017/GeoBook"  ;
+const dbUrl =   "mongodb://127.0.0.1:27017/GeoBook" || process.env.DB_URL  ;
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
@@ -94,6 +94,7 @@ const connectSrcUrls = [
   "https://api.mapbox.com",
   "https://events.mapbox.com",
   "https://res.cloudinary.com/dv5vm4sqh/",
+  "https://images.unsplash.com/"
 ];
 const fontSrcUrls = ["https://res.cloudinary.com/dj4kytz0z/"];
 
@@ -111,6 +112,7 @@ app.use(
         "blob:",
         "data:",
         "https://res.cloudinary.com/dj4kytz0z/", 
+        "https://images.unsplash.com/",
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
       mediaSrc: ["https://res.cloudinary.com/dj4kytz0z/"],
