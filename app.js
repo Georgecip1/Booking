@@ -23,7 +23,7 @@ const cazareRoutes = require("./routes/cazari");
 const reviewRoutes = require("./routes/reviews");
 const bookingRoutes = require("./routes/bookings")
 const MongoStore = require("connect-mongo");
-const dbUrl =   "mongodb://127.0.0.1:27017/GeoBook" || process.env.DB_URL  ;
+const dbUrl =  process.env.DB_URL || "mongodb://127.0.0.1:27017/GeoBook"  ;
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
