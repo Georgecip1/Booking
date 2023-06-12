@@ -21,23 +21,23 @@ const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const cazareRoutes = require("./routes/cazari");
 const reviewRoutes = require("./routes/reviews");
-const bookingRoutes = require("./routes/bookings")
+const bookingRoutes = require("./routes/bookings");
 const MongoStore = require("connect-mongo");
-const dbUrl =   "mongodb://127.0.0.1:27017/GeoBook" || process.env.DB_URL  ;
+const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/GeoBook";
 
 mongoose.connect(dbUrl);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
   console.log("Database connected");
-}); 
+});
 
 app.engine("ejs", engine);
-app.set("view engine", "ejs"); 
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method")); 
+app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
@@ -94,7 +94,7 @@ const connectSrcUrls = [
   "https://api.mapbox.com",
   "https://events.mapbox.com",
   "https://res.cloudinary.com/dv5vm4sqh/",
-  "https://images.unsplash.com/"
+  "https://images.unsplash.com/",
 ];
 const fontSrcUrls = ["https://res.cloudinary.com/dj4kytz0z/"];
 
@@ -111,7 +111,7 @@ app.use(
         "'self'",
         "blob:",
         "data:",
-        "https://res.cloudinary.com/dj4kytz0z/", 
+        "https://res.cloudinary.com/dj4kytz0z/",
         "https://images.unsplash.com/",
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
@@ -137,7 +137,7 @@ app.use((req, res, next) => {
 app.use("/", userRoutes);
 app.use("/cazari", cazareRoutes);
 app.use("/cazari/:id/reviews", reviewRoutes);
-app.use('/cazari/:id/bookings', bookingRoutes)
+app.use("/cazari/:id/bookings", bookingRoutes);
 
 app.get("/", (req, res) => {
   res.render("home");
